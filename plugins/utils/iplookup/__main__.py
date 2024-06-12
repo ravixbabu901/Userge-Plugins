@@ -14,8 +14,8 @@
 
 import aiohttp
 from pyrogram import enums
+from pyrogram.types import LinkPreviewOptions
 from userge import userge, Message
-
 
 @userge.on_cmd(
     "iplook", about={
@@ -59,6 +59,6 @@ async def _ip_look_up(message: Message):
               f"**City:** `{city}`\n"
               f"**Location:** `{localisation}`\n"
               f"**Google Map:** {gmap_lock}"),
-        disable_web_page_preview=True,
+        link_preview_options=LinkPreviewOptions(is_disabled=True),
         parse_mode=enums.ParseMode.MARKDOWN
     )

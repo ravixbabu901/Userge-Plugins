@@ -13,10 +13,9 @@
 
 import os
 from datetime import datetime
-
-from removebg import RemoveBg
-
+from pyrogram.types import LinkPreviewOptions
 from pyrogram import enums
+from removebg import RemoveBg
 
 from userge import userge, config, Message
 from userge.utils import progress
@@ -33,7 +32,7 @@ async def remove_background(message: Message):
         await message.edit(
             "Get the API from <a href='https://www.remove.bg/b/background-removal-api'>HERE "
             "</a> & add it to Heroku Config Vars <code>REMOVE_BG_API_KEY</code>",
-            disable_web_page_preview=True, parse_mode=enums.ParseMode.HTML)
+            link_preview_options=LinkPreviewOptions(is_disabled=True), parse_mode=enums.ParseMode.HTML)
         return
     await message.edit("Analysing...")
     replied = message.reply_to_message

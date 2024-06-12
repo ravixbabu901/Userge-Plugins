@@ -11,7 +11,7 @@
 # Author: Fayas (https://github.com/FayasNoushad) (@FayasNoushad)
 
 from countryinfo import CountryInfo
-
+from pyrogram.types import LinkPreviewOptions
 from userge import userge, Message
 
 PREVIEW = False  # False for instant view
@@ -43,4 +43,4 @@ Wiki : {country.wiki()}"""
     try:
         await update.edit_text(text=info, disable_web_page_preview=PREVIEW)
     except Exception as error:
-        await update.edit_text(text=error, disable_web_page_preview=True)
+        await update.edit_text(text=error, link_preview_options=LinkPreviewOptions(is_disabled=True))

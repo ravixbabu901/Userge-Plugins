@@ -13,7 +13,7 @@
 
 import aiohttp
 from bs4 import BeautifulSoup
-
+from pyrogram.types import LinkPreviewOptions
 from userge import userge, Message
 
 
@@ -64,7 +64,9 @@ async def cnf(message: Message):
 
             payload += f"{os}\n`{command}`\n\n"
 
-        await message.edit(payload, disable_web_page_preview=False)
+        await message.edit(payload, link_preview_options=LinkPreviewOptions(
+                    is_disabled=False
+                ))
     except IndexError:
         await message.edit("Command Not Found")
     except Exception as err:

@@ -11,7 +11,7 @@
 # Author: Fayas (https://github.com/FayasNoushad) (@FayasNoushad)
 
 from requests.utils import requote_uri
-
+from pyrogram.types import LinkPreviewOptions
 from userge import userge, Message
 
 
@@ -26,5 +26,5 @@ async def requote(update: Message):
         text = requote_uri(update.input_str)
     await update.edit(
         text=text,
-        disable_web_page_preview=True
+        link_preview_options=LinkPreviewOptions(is_disabled=True)
     )

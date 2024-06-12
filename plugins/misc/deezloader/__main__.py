@@ -15,7 +15,7 @@ from pathlib import Path
 
 import deezloader  # pylint: disable=W0406
 from deezloader.exceptions import NoDataApi
-
+from pyrogram.types import LinkPreviewOptions
 from userge import userge, Message, pool
 from . import ARL_TOKEN
 from ..upload import doc_upload, audio_upload
@@ -51,7 +51,7 @@ async def deezload(message: Message):
         os.makedirs(TEMP_PATH)
     await message.edit("Checking your Token.")
     if ARL_TOKEN is None:
-        await message.edit(ARL_HELP, disable_web_page_preview=True)
+        await message.edit(ARL_HELP, link_preview_options=LinkPreviewOptions(is_disabled=True))
         return
     try:
         loader = deezloader.Login(ARL_TOKEN)
