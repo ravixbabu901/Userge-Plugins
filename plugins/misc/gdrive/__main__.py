@@ -230,7 +230,7 @@ class _GDrive:
             file_id = u_file_obj.get("id")
         else:
             media_body = MediaFileUpload(file_path, mimetype=mime_type,
-                                         chunksize=50*1024*1024, resumable=True)
+                                         chunksize=192*1024*1024, resumable=True)
             u_file_obj = self._service.files().create(body=body, media_body=media_body,
                                                       supportsTeamDrives=True)
             c_time = time.time()
@@ -329,7 +329,7 @@ class _GDrive:
     def _download_file(self, path: str, name: str, **kwargs) -> None:
         request = self._service.files().get_media(fileId=kwargs['id'], supportsTeamDrives=True)
         with io.FileIO(os.path.join(path, name), 'wb') as d_f:
-            d_file_obj = MediaIoBaseDownload(d_f, request, chunksize=50*1024*1024)
+            d_file_obj = MediaIoBaseDownload(d_f, request, chunksize=192*1024*1024)
             c_time = time.time()
             done = False
             while done is False:
@@ -338,11 +338,14 @@ class _GDrive:
                     raise ProcessCanceled
                 if status:
                     f_size = status.total_size
-                    diff = time.time() - c_time
+                    #diff = time.time() - c_time
+                    diff = max(time.time() - c_time, 0.001)
                     downloaded = status.resumable_progress
                     percentage = downloaded / f_size * 100
-                    speed = round(downloaded / diff, 2)
-                    eta = round((f_size - downloaded) / speed)
+                    #speed = round(downloaded / diff, 2)
+                    speed = uploaded / diff
+                    #eta = round((f_size - downloaded) / speed)
+                    eta = (f_size - uploaded) / max(speed, 1)  # prevent div-by-zero
                     tmp = \
                         "__Downloading From GDrive...__\n" + \
                         "```\n[{}{}]({}%)```\n" + \
